@@ -1,13 +1,18 @@
+# classifier.py
+from transformers import pipeline
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-from transformers import pipeline
 
-# Force CPU usage
-classifier = pipeline("zero-shot-classification", 
-                      model="facebook/bart-large-mnli", 
-                      device=-1)  # -1 means CPU
+classifier = pipeline("zero-shot-classification",
+                      model="joeddav/xlm-roberta-large-xnli",
+                      device=-1,
+                      use_fast=False)
 
-def classify(text: str) -> str:
-    candidate_labels = ["politics", "technology", "health", "economy", "sports", "entertainment", "culture", "social media"]
-    result = classifier(text, candidate_labels)
-    return result["labels"][0]  # return top category
+def classify(text: str, lang: str) -> str:
+    candidate_labels = {
+        "en": ["politics", "technology", "health", "economy", "sports", "entertainment", "culture", "social media"],
+        "fr": ["politique", "technologie", "santé", "économie", "sport", "divertissement", "culture", "réseaux sociaux"]
+    }
+    labels = candidate_labels.get(lang, candidate_labels["en"])
+    result = classifier(text, labels)
+    return result["labels"][0]

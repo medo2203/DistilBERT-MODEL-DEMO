@@ -5,12 +5,10 @@ from language_detector import detect_language
 
 article = load_article("sample.json")
 
-# Combine title + description
 text = f"{article['title']} {article['description']}"
-
-keywords = extract_keywords(text)
-category = classify(text)
 language = detect_language(text)
+keywords = extract_keywords(text)
+category = classify(text, language)
 
 print("\n📰 Article Analysis")
 print("-" * 40)

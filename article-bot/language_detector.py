@@ -1,7 +1,5 @@
-from langdetect import detect
+import langid
 
 def detect_language(text: str) -> str:
-    try:
-        return detect(text)
-    except:
-        return "unknown"
+    lang, _ = langid.classify(text)
+    return lang
